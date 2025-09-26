@@ -10,6 +10,7 @@ import type {
   ChatCompletionMessageParam,
   ChatCompletion,
 } from "openai/resources/chat/completions";
+import { prisma } from "@/lib/db";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
 
@@ -42,9 +43,9 @@ function extractTag(text: string | null | undefined, tag: string): string | unde
   return m?.[1]?.trim();
 }
 
-export const helloWorld = inngest.createFunction(
-  { id: "hello-world" },                   // keep same id if you want to replace the original
-  { event: "test/hello.world" },
+export const codeAgentFunction = inngest.createFunction(
+  { id: "code-agent" },                   // keep same id if you want to replace the original
+  { event: "code-agent/run" },
   async ({ event, step }) => {
     // --- Create or reuse a sandbox (compatible with your existing utils) ---
     const sandboxId = await step.run("ensure-sandbox", async () => {
@@ -259,12 +260,38 @@ export const helloWorld = inngest.createFunction(
       return `https://${host}`;
     });
 
+   const saved = await step.run("save-result", async () => {
+  try {
+    return await prisma.message.create({
+      data: {
+        projectId:event.data.projectId,
+        content: output || "",
+        role: "ASSISTANT",
+        type: "RESULT",
+        fragment: {
+          create: {
+            sandboxUrl: url,
+            title: "Fragment",
+            files: filesState ?? {},   // adapt type to your schema
+          },
+        },
+      },
+      include: { fragment: true },
+    });
+  } catch (err) {
+  console.error("Failed to save message:", err);
+  throw err; // lets Inngest retry
+}
+});
+
+
     return {
-      url,
-      title: "Fragment",
-      files: filesState,     // parity with result.state.data.files
-      summary: taskSummary,  // parity with result.state.data.summary
-      output,                // optional: keep the assistant’s last content if you need it
+      id: saved.id,
+  url: saved.fragment?.sandboxUrl ?? url,
+  title: saved.fragment?.title ?? "Fragment",
+  files: filesState,
+  summary: taskSummary,
+  output,
     };
   }
 );
