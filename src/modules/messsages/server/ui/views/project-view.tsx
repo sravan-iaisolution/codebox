@@ -9,7 +9,8 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import MessageContainer from "../components/messages-container";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import { ProjectHeader } from "../components/project-header";
 
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 
 export const ProjectView = ({ projectId }: Props) => {
     const trpc = useTRPC();
+    const [activeFragment,setActiveFragment]=useState<string|null>(null)
     const { data: project } = useSuspenseQuery(trpc.projects.getOne.queryOptions({
         id: projectId,
     }));
@@ -32,8 +34,12 @@ export const ProjectView = ({ projectId }: Props) => {
       minSize={20}
       className="flex flex-col min-h-0"
     >
+        <Suspense fallback={<p>Loading project header....</p>}>
+         <ProjectHeader projectId={projectId}/>
+        </Suspense>
+       
         <Suspense fallback={<p>Loading messages....</p>}>
-        <MessageContainer projectId={projectId}/>
+        <MessageContainer projectId={projectId} activeFragment={activeFragment} setActiveFragment={setActiveFragment}/>
         </Suspense>
       
     </ResizablePanel>

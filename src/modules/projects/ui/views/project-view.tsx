@@ -8,6 +8,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { useState } from "react";
 
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 
 export const ProjectView = ({ projectId }: Props) => {
     const trpc = useTRPC();
+    const[activeFragment,setActiveFragment]=useState<string|null>(null)
     const { data: project } = useSuspenseQuery(trpc.projects.getOne.queryOptions({
         id: projectId,
     }));
