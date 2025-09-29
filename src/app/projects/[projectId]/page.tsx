@@ -1,3 +1,4 @@
+
 import { ProjectView } from "@/modules/messsages/server/ui/views/project-view";
 import { trpc, getQueryClient } from "@/trpc/server"; // <-- server proxy + server QC
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -8,8 +9,7 @@ interface Props {
 }
 
 const Page = async ({ params }: Props) => {
-    const { projectId } = params;
-
+    const { projectId } =await params;
     const queryClient = getQueryClient();
 
     // These assume your procedures accept these inputs.

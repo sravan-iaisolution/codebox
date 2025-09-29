@@ -8,8 +8,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import MessageContainer from "../components/messages-container";
-import { Suspense } from "react";
 
 
 interface Props {
@@ -32,16 +30,13 @@ export const ProjectView = ({ projectId }: Props) => {
       minSize={20}
       className="flex flex-col min-h-0"
     >
-        <Suspense fallback={<p>Loading messages....</p>}>
-        <MessageContainer projectId={projectId}/>
-        </Suspense>
-      
+      {JSON.stringify(project)}
     </ResizablePanel>
 
     <ResizableHandle />
 
     <ResizablePanel defaultSize={65} minSize={50}>
-      preview
+      {JSON.stringify(messages, null, 2)}
     </ResizablePanel>
   </ResizablePanelGroup>
 </div>

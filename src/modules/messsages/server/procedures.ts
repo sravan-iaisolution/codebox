@@ -9,6 +9,7 @@ export const messagesRouter = createTRPCRouter({
     .query(async ({ input }) => {
       return prisma.message.findMany({
         where: { projectId: input.projectId },
+        include:{fragment:true},
         orderBy: { createdAt: "asc" }, // or updatedAt: "asc" if you prefer
       });
     }),
