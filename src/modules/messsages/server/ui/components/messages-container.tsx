@@ -17,17 +17,20 @@ const trpc = useTRPC();
 const bottomRef=useRef<HTMLDivElement>(null)
 const { data: messages } = useSuspenseQuery(trpc.messages.getMany.queryOptions({
   projectId: projectId,
-},{refetchInterval: 2000}));
+},{refetchInterval: 3000}));
 
-// useEffect(() => {
-//   const lastAssistantMessage = messages.findLast(
-//     (message) => message.role === "ASSISTANT" && !!message.fragment
-//   );
 
-//   if (lastAssistantMessage) {
-//  setActiveFragment?.(lastAssistantMessage.fragment  )
-//   }
-// }, [messages,setActiveFragment]);
+useEffect(() => {
+  const lastAssistantMessage = messages.findLast(
+    (message) => message.role === "ASSISTANT" && !!message.fragment
+  );
+
+  console.log("Last assistant message:", lastAssistantMessage);
+
+  if (lastAssistantMessage) {
+ setActiveFragment?.(lastAssistantMessage.fragment)
+  }
+}, [messages,setActiveFragment]);
 
 const lastMessage = messages[messages.length - 1];
 const isLastMessageFromUser = lastMessage?.role === "USER";
