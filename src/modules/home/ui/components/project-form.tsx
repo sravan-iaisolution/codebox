@@ -146,7 +146,7 @@ const form = useForm<z.infer<typeof formSchema>>({
         </div>
         
       </form>
-      <div className="flex-wrap mt-4 justify-center gap-2 hidden md:flex max-w-3xl">
+      {/* <div className="flex-wrap mt-4 justify-center gap-2 hidden md:flex max-w-3xl">
   {PROJECT_TEMPLATES.map((template) => (
     <Button
       key={template.title}
@@ -158,7 +158,7 @@ const form = useForm<z.infer<typeof formSchema>>({
       {template.emoji} {template.title}
     </Button>
   ))}
-</div>
+</div> */}
     </Form>
   );
 };
