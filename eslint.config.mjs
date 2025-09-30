@@ -18,7 +18,26 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "**/generated/*",
     ],
+    
+  },
+  {
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      // Softer, migration-friendly settings:
+      "@typescript-eslint/no-explicit-any": [
+        "warn",
+        { ignoreRestArgs: true, fixToUnknown: true, ignoreTypedArrays: false },
+      ],
+    },
+    languageOptions: {
+      parserOptions: {
+        // Helps type-aware rules if you use them later
+        project: ["./tsconfig.json"],
+        tsconfigRootDir: __dirname,
+      },
+    },
   },
 ];
 

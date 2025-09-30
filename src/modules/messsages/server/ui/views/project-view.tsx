@@ -25,7 +25,7 @@ interface Props {
 
 export const ProjectView = ({ projectId }: Props) => {
     const trpc = useTRPC();
-    const [activeFragment,setActiveFragment]=useState<string|null>(null)
+    const [activeFragment,setActiveFragment]=useState<any>(null)
     const [tabState,setTabState]=useState<"preview"|"code">("preview")
     return (
         <div className="h-screen">

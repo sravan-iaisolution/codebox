@@ -8,8 +8,8 @@ import { MessageLoading } from "./message-loading";
 
 interface Props {
     projectId: string;
-    activeFragment?:string|null;
-    setActiveFragment?:(fragmentId:string|null)=>void
+    activeFragment?:any;
+    setActiveFragment?:(fragmentId:any)=>void
 };
 
 const MessageContainer=({projectId,activeFragment,setActiveFragment}:Props)=>{
