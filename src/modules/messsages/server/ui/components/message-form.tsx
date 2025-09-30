@@ -31,6 +31,8 @@ export const MessageForm = ({ projectId }: Props) => {
   },
 });
 
+console.log(projectId,'don')
+
 const trpc=useTRPC()
 const queryClient=useQueryClient()
 const createMessage = useMutation(trpc.messages.create.mutationOptions({
@@ -93,6 +95,8 @@ onKeyDown={(e) => {
     />
   )}
 />
+<div className="flex items-center justify-between mt-2">
+
 <div className="text-[10px] text-muted-foreground font-mono">
   <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
     <span>&#8984;</span>Enter
@@ -113,7 +117,7 @@ onKeyDown={(e) => {
 )}
 
 </Button>
-
+</div>
     </form>
   </Form>
 );

@@ -19,16 +19,18 @@ const { data: messages } = useSuspenseQuery(trpc.messages.getMany.queryOptions({
   projectId: projectId,
 },{refetchInterval: 3000}));
 
+const lastAssistantMessageIdRef=useRef<string|null>(null)
+
 
 useEffect(() => {
   const lastAssistantMessage = messages.findLast(
     (message) => message.role === "ASSISTANT" && !!message.fragment
   );
 
-  console.log("Last assistant message:", lastAssistantMessage);
 
-  if (lastAssistantMessage) {
- setActiveFragment?.(lastAssistantMessage.fragment)
+  if (lastAssistantMessage?.fragment&&lastAssistantMessage.id!==activeFragment?.id) {
+ setActiveFragment?.(lastAssistantMessage?.fragment)
+ lastAssistantMessageIdRef.current=lastAssistantMessage.id
   }
 }, [messages,setActiveFragment]);
 
